@@ -1,1 +1,31 @@
+```css
+body {
+  background-color: #000;
+  color: #00ff99;
+  font-family: 'Courier New', monospace;
+  padding: 40px;
+}
 
+.terminal {
+  max-width: 700px;
+  margin: auto;
+  text-align: left;
+}
+
+.cmd {
+  color: #ff0066;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.cmd:hover {
+  color: #ff3399;
+  text-shadow: 0 0 5px #ff0066;
+}
+
+.terminal-hint {
+  color: #ccc;
+  font-size: 0.85em;
+  margin-top: 30px;
+}
+```
