@@ -1,0 +1,86 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Vendre un cours | CyberLab Bazaar</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    form {
+      background-color: #111;
+      border: 1px solid #00ff99;
+      padding: 20px;
+      margin-top: 40px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px #00ff99;
+      max-width: 700px;
+}
+
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+}
+
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      background-color: #000;
+      border: 1px solid #00ff99;
+      color: #00ff99;
+      font-family: 'Courier New', monospace;
+}
+
+.submit-btn {
+      background-color: #ff0066;
+      border: none;
+      padding: 12px 24px;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      box-shadow: 0 0 10px #ff0066;
+}
+
+.submit-btn:hover {
+      background-color: #ff3399;
+}
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <h2>> 🎓 Formulaire - Vendre un cours</h2>
+    <p>> Agent connecté: <strong class="cmd">GAZO_09</strong> | Accès: Formateur 🔓</p>
+
+    <form action="#" method="post">
+      <label for="title">Titre du cours:</label>
+      <input type="text" id="title" name="title" placeholder="ex: OSINT par les ombres" required>
+
+      <label for="niveau">Niveau:</label>
+      <select id="niveau" name="niveau">
+        <option value="débutant">Débutant</option>
+        <option value="intermédiaire">Intermédiaire</option>
+        <option value="élite">Élite</option>
+      </select>
+
+      <label for="prix">Prix (en USDT ou crypto):</label>
+      <input type="text" id="prix" name="prix" placeholder="ex: 0.0057 ETH">
+
+      <label for="tags">Tags (séparés par des virgules):</label>
+      <input type="text" id="tags" name="tags" placeholder="ex: OSINT, Anonymat, Scripts">
+
+      <label for="desc">Description du cours:</label>
+      <textarea id="desc" name="desc" rows="5" placeholder="Ce cours vous apprendra à traquer sans être vu..." required></textarea>
+
+      <label for="file">Fichier ZIP / PDF / VM:</label>
+      <input type="file" id="file" name="file">
+
+      <button type="submit" class="submit-btn">📤 Publier le cours</button>
+    </form>
+
+    <p class="terminal-hint">> Une fois validé, ton cours apparaîtra dans le <a class="cmd" href="catalogue.html">catalogue</a>. Surveillance activée par `admin@cyberlab`.</p>
+  </div>
+</body>
+</html>
+```
