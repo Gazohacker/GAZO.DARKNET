@@ -1,21 +1,26 @@
 ```css
+/* === STYLES GÉNÉRAUX === */
 body {
   background-color: #000;
   color: #00ff99;
   font-family: 'Courier New', monospace;
   padding: 40px;
+  margin: 0;
 }
 
 .terminal {
-  max-width: 700px;
+  max-width: 750px;
   margin: auto;
   text-align: left;
 }
 
+/* === LIENS COMMANDE TERMINAL === */
 .cmd {
   color: #ff0066;
   font-weight: bold;
   text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s, text-shadow 0.3s;
 }
 
 .cmd:hover {
@@ -24,8 +29,42 @@ body {
 }
 
 .terminal-hint {
-  color: #ccc;
+  color: #aaa;
   font-size: 0.85em;
   margin-top: 30px;
+}
+
+/* === STYLE DES COURS === */
+.course-list {
+  margin-top: 30px;
+}
+
+.course {
+  background-color: #111;
+  border: 1px solid #00ff99;
+  padding: 15px 20px;
+  margin-bottom: 25px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px #00ff99;
+  transition: transform 0.3s ease;
+}
+
+.course:hover {
+  transform: scale(1.015);
+  box-shadow: 0 0 15px #00ff99;
+}
+
+.course h3 {
+  color: #ff0066;
+  margin-bottom: 8px;
+}
+
+.badge {
+  background-color: #ff0066;
+  color: #fff;
+  font-size: 0.75em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: 8px;
 }
 ```
