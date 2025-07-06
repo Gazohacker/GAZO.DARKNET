@@ -2,118 +2,156 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<title>Simulateur de Championnat Football</title>
-<style>
-  body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; background: #f0f0f0; }
-  h1 { text-align: center; }
-  table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-  th, td { border: 1px solid #aaa; padding: 8px; text-align: center; }
-  th { background: #333; color: white; }
-  .league-title { margin-top: 40px; color: #222; text-align: center; }
-  button { padding: 10px 20px; font-size: 16px; cursor: pointer; display: block; margin: 20px auto; }
-</style>
+  <meta charset="UTF-8">
+  <title>GAZO.SHIELD FOOTBALL 2.0</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+}
+    canvas {
+      display: block;
+      margin: auto;
+      border: 4px solid #1fffe2;
+      box-shadow: 0 0 20px #1fffe2;
+}
+    #hud {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 5px #000;
+}
+  </style>
 </head>
 <body>
+  <div id="hud">⏱️ Temps: 0:00 | 🔴 Barça 0 - 0 City 🔵</div>
+  <canvas id="gameCanvas" width="800" height="500"></canvas>
 
-<h1>Simulateur de Championnat de Football</h1>
-<button id="simulateBtn">Simuler une Journée</button>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const hud = document.getElementById("hud");
 
-<h2 class="league-title">La Liga</h2>
-<table id="ligaTable">
-  <thead>
-    <tr><th>Club</th><th>J</th><th>G</th><th>N</th><th>P</th><th>BP</th><th>BC</th><th>Diff</th><th>Pts</th></tr>
-  </thead>
-  <tbody></tbody>
-</table>
+    // Load terrain image
+    const background = new Image();
+    background.src = "https://upload.wikimedia.org/wikipedia/commons/6/6d/Soccer_field_blank.svg";
 
-<h2 class="league-title">Premier League</h2>
-<table id="premTable">
-  <thead>// Simuler une journée de matchs (5 matchs, chaque club joue une fois)
-  function simulateRound(clubs) {
-    // Shuffle clubs pour appariement
-    let shuffled = clubs.slice().sort(() => Math.random() - 0.5);
+    // Load logos
+    const barcaLogo = new Image();
+    barcaLogo.src = "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/1200px-FC_Barcelona_%28crest%29.svg.png";
+    const cityLogo = new Image();
+    cityLogo.src = "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png";
 
-    // Matchs par paire
-    for(let i=0; i<shuffled.length; i+=2) {
-      let home = shuffled[i];
-      let away = shuffled[i+1];
-      let homeGoals = randomScore();
-      let awayGoals = randomScore();
+    let score = { barca: 0, city: 0};
+    let startTime = Date.now();
 
-      // Mise à jour stats
-      home.played++;
-      away.played++;
-      home.goalsFor += homeGoals;
-      home.goalsAgainst += awayGoals;
-      away.goalsFor += awayGoals;
-      away.goalsAgainst += homeGoals;
+    const players = [
+      { x: 150, y: 250, color: "red", name: "Messi", team: "Barça", speed: 4},
+      { x: 650, y: 250, color: "blue", name: "Haaland", team: "City", speed: 4.2}
+    ];
 
-      if(homeGoals > awayGoals) {
-        home.won++;
-        home.points += 3;
-        away.lost++;
-      } else if(homeGoals < awayGoals) {
-        away.won++;
-        away.points += 3;
-        home.lost++;
-      } else {
-        home.draw++;
-        away.draw++;
-        home.points++;
-        away.points++;
-      }
-    }
-  }
+    const ball = { x: 400, y: 250, radius: 8, dx: 0, dy: 0};
 
-  // Tri classement (points, diff buts, buts pour)
-  function sortClubs(clubs) {
-    clubs.sort((a,b) => {
-      if(b.points !== a.points) return b.points - a.points;
-      let diffA = a.goalsFor - a.goalsAgainst;
-      let diffB = b.goalsFor - b.goalsAgainst;
-      if(diffB !== diffA) return diffB - diffA;return b.goalsFor - a.goalsFor;
-    });
-  }
+    document.addEventListener("keydown", (e) => keys[e.key] = true);
+    document.addEventListener("keyup", (e) => keys[e.key] = false);
+    let keys = {};
 
-  // Afficher classement dans table HTML
-  function displayTable(clubs, tableBody) {
-    tableBody.innerHTML = "";
-    clubs.forEach(c => {
-      let diff = c.goalsFor - c.goalsAgainst;
-      let tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>c.name</td>
-        <td>{c.played}</td>
-        <td>c.won</td>
-        <td>{c.draw}</td>
-        <td>c.lost</td>
-        <td>{c.goalsFor}</td>
-        <td>c.goalsAgainst</td>
-        <td>{diff}</td>
-        <td>${c.points}</td>
-      `;
-      tableBody.appendChild(tr);
-    });
-  }
+    function drawScene() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+      drawLogos();
+      drawBall();
+      players.forEach(drawPlayer);
+}
 
-  const ligaBody = document.querySelector("#ligaTable tbody");
-  const premBody = document.querySelector("#premTable tbody");
+    function drawPlayer(p) {
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#fff";
+      ctx.font = "12px Courier";
+      ctx.fillText(p.name, p.x - 20, p.y - 20);
+}
 
-  // Première affichage
-  displayTable(ligaClubs, ligaBody);
-  displayTable(premClubs, premBody);
+    function drawBall() {
+      ctx.fillStyle = "#fff";
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fill();
+}
 
-  document.getElementById("simulateBtn").addEventListener("click", () => {
-    simulateRound(ligaClubs);
-    simulateRound(premClubs);
-    sortClubs(ligaClubs);
-    sortClubs(premClubs);
-    displayTable(ligaClubs, ligaBody);
-    displayTable(premClubs, premBody);
-  });
-</script>
+    function drawLogos() {
+      ctx.drawImage(barcaLogo, 20, 20, 40, 40);
+      ctx.drawImage(cityLogo, 740, 20, 40, 40);
+}
 
+    function movePlayers() {
+      let p = players[0]; // control Messi
+      if (keys["ArrowUp"]) p.y -= p.speed;
+      if (keys["ArrowDown"]) p.y += p.speed;
+      if (keys["ArrowLeft"]) p.x -= p.speed;
+      if (keys["ArrowRight"]) p.x += p.speed;
+
+      if (keys[" "]) {
+        ball.dx = (ball.x - p.x) * 0.1;
+        ball.dy = (ball.y - p.y) * 0.1;
+}
+}
+
+    function updateBall() {
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+      ball.dx *= 0.98;
+      ball.dy *= 0.98;
+
+      checkGoal();
+}
+
+    function checkGoal() {
+      if (ball.x < 10 && ball.y> 200 && ball.y < 300) {
+        score.city += 1;
+        resetBall();
+}
+      if (ball.x> 790 && ball.y> 200 && ball.y < 300) {
+        score.barca += 1;
+        resetBall();
+}
+}
+
+    function resetBall() {
+      ball.x = 400;
+      ball.y = 250;
+      ball.dx = 0;
+      ball.dy = 0;
+}
+
+    function updateHud() {
+      let now = Date.now();
+      let seconds = Math.floor((now - startTime) / 1000);
+      let min = Math.floor(seconds / 60);
+      let sec = seconds % 60;
+      let timeStr = `${min}:${sec < 10? "0": ""}${sec}`;
+      hud.innerHTML = `⏱️ Temps: ${timeStr} | 🔴 Barça ${score.barca} - ${score.city} City 🔵`;
+}
+
+    function loop() {
+      movePlayers();
+      updateBall();
+      drawScene();
+      updateHud();
+      requestAnimationFrame(loop);
+}
+
+    loop();
+  </script>
 </body>
 </html>
 ```
