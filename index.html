@@ -3,51 +3,86 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ma Boutique</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Jeu de Tir</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+    }
+    #gameCanvas {
+      display: block;
+      background: #222;
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+    }
+  </style>
 </head>
 <body>
+  <canvas id="gameCanvas"></canvas>
+  <div id="score">Score : 0</div>
 
-  <header>
-    <h1>Bienvenue sur Ma Boutique</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Accueil</a></li>
-        <li><a href="produits.html">Produits</a></li>
-        <li><a href="panier.html">Panier</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
 
-  <main>
-    <section class="hero">
-      <h2>Découvrez nos meilleures offres !</h2>
-      <p>Des produits de qualité à des prix imbattables.</p>
-    </section>
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    <section class="produits">
-      <div class="produit">
-        <img src="produit1.jpg" alt="Produit 1">
-        <h3>Produit 1</h3>
-        <p>Prix : 19.99€</p>
-        <button>Ajouter au panier</button>
-      </div>
+    let score = 0;
+    let target = {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: 30,
+      dx: 2 + Math.random() * 3,
+      dy: 2 + Math.random() * 3
+    };
 
-      <div class="produit">
-        <img src="produit2.jpg" alt="Produit 2">
-        <h3>Produit 2</h3>
-        <p>Prix : 24.99€</p>
+    function drawTarget() {
+      ctx.beginPath();
+      ctx.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "red";
+      ctx.fill();
+      ctx.closePath();
+    }
 
-<button>Ajouter au panier</button>
-      </div>
-    </section>
-  </main>
+    function update() {
 
-  <footer>
-    <p>&copy; 2025 Ma Boutique - Tous droits réservés</p>
-  </footer>
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawTarget();
 
+      target.x += target.dx;
+      target.y += target.dy;
+
+      if (target.x + target.radius > canvas.width || target.x - target.radius < 0) {
+        target.dx *= -1;
+      }
+      if (target.y + target.radius > canvas.height || target.y - target.radius < 0) {
+        target.dy *= -1;
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    canvas.addEventListener("click", function(e) {
+      const dist = Math.hypot(e.clientX - target.x, e.clientY - target.y);
+      if (dist < target.radius) {
+        score++;
+        document.getElementById("score").textContent = "Score : " + score;
+        target.x = Math.random() * canvas.width;
+        target.y = Math.random() * canvas.height;
+      }
+    });
+
+    update();
+  </script>
 </body>
 </html>
+```
