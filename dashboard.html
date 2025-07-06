@@ -1,0 +1,94 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Agent | CyberLab</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+.dashboard {
+      background: #111;
+      padding: 30px;
+      margin: 40px auto;
+      border-radius: 8px;
+      max-width: 750px;
+      border: 1px solid #00ff99;
+      box-shadow: 0 0 10px #00ff99;
+}
+
+.level {
+      font-size: 1.2em;
+      color: #ff0066;
+}
+
+.progress-bar {
+      background: #000;
+      border: 1px solid #00ff99;
+      margin-top: 10px;
+      height: 20px;
+      position: relative;
+      border-radius: 5px;
+}
+
+.progress {
+      background: #00ff99;
+      height: 100%;
+      width: 68%;
+      border-radius: 5px;
+}
+
+.badge-list {
+      margin-top: 20px;
+}
+
+.badge {
+      background-color: #222;
+      color: #00ff99;
+      display: inline-block;
+      border: 1px solid #00ff99;
+      padding: 6px 10px;
+      border-radius: 4px;
+      margin: 5px;
+      font-size: 0.85em;
+}
+
+.module {
+      margin-top: 10px;
+      padding-left: 15px;
+}
+  </style>
+</head>
+<body>
+  <div class="terminal dashboard">
+    <h2>> DASHBOARD DE L’AGENT</h2>
+    <p>> Identifiant: <strong class="cmd">GAZO_09</strong></p>
+    <p>> Rang actuel: <span class="level">Elite</span></p>
+    <p>> XP: 680 / 1000</p>
+
+    <div class="progress-bar">
+      <div class="progress"></div>
+    </div>
+
+    <div class="badge-list">
+      <h3>> Badges débloqués:</h3>
+      <span class="badge">🎓 Débutant</span>
+      <span class="badge">🧪 Analyseur Réseau</span>
+      <span class="badge">🕵️ OSINT Niveau 1</span>
+      <span class="badge">🔓 Accès Vault</span>
+    </div>
+
+    <div class="module">
+      <h3>> Modules terminés:</h3>
+      <ul>
+        <li>> 🛡️ Kali Linux Intro ✔️</li>
+        <li>> 🔍 Reconnaissance passive ✔️</li>
+        <li>> ⏳ Crypto wallet tutorial 🕐 (en cours)</li>
+      </ul>
+    </div>
+
+    <p class="terminal-hint">> Prochain rang: <strong>LÉGENDE</strong> à 1000 XP. Continue d’explorer la base, agent.</p>
+    <p>> Commandes: <a class="cmd" href="index.html">index</a> | <a class="cmd" href="ctf.html">ctf</a> | <a class="cmd" href="vault.html">vault</a></p>
+  </div>
+</body>
+</html>
+```
