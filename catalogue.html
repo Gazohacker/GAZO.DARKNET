@@ -4,38 +4,50 @@
 <head>
   <meta charset="UTF-8">
   <title>Catalogue CyberLab</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <div class="terminal">
-    <h2>> CATALOGUE CYBER 📚</h2>
-    <p>> Agent GAZO_09 connecté. Accès confirmé.</p>
+    <h2>> CATALOGUE CYBERLAB 📚</h2>
+    <p>> Agent: <span class="cmd">GAZO_09</span> | Chargement des cours en cours...</p>
 
-    <div class="course-list">
-      <div class="course">
-        <h3>> 🛡️ Kali Linux - Introduction</h3>
-        <p>> Niveau: Débutant</p>
-        <p>> Prix: 0.0023 BTC (~$89)</p>
-        <a class="cmd" href="course.html?id=kali_intro">🔍 Voir le cours</a>
-      </div>
+    <div class="course-list" id="courseList"></div>
 
-      <div class="course">
-        <h3>> 🔓 Pentesting Web - Niveau 2</h3>
-        <p>> Niveau: Intermédiaire</p>
-        <p>> Prix: 0.0047 ETH (~$72)</p>
-        <a class="cmd" href="course.html?id=web_pentest">🔍 Voir le cours</a>
-      </div>
-
-      <div class="course">
-        <h3>> 👁️‍🗨️ OSINT Invisible - Méthodes avancées</h3>
-        <p>> Niveau: Elite</p>
-        <p>> Prix: 0.0059 USDT (~$49)</p>
-        <a class="cmd" href="course.html?id=osint_ghost">🔍 Voir le cours</a>
-      </div>
-    </div>
-
-    <p class="terminal-hint">> Tape ou clique sur 🔍 pour explorer un module. Crypto requise pour déverrouillage.</p>
+    <p class="terminal-hint">> Les modules sont mis à jour dynamiquement.</p>
+    <p>> Commandes: <a class="cmd" href="index.html">index</a> | <a class="cmd" href="sell.html">vendre</a></p>
   </div>
+
+  <script>
+    // Configuration Firebase à personnaliser
+    const firebaseConfig = {
+      apiKey: "TON_API_KEY",
+      authDomain: "TON_PROJET.firebaseapp.com",
+      projectId: "TON_PROJECT_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const courseList = document.getElementById("courseList");
+
+    db.collection("courses").orderBy("timestamp", "desc").get().then(snapshot => {
+      snapshot.forEach(doc => {
+        const c = doc.data();
+        const block = `
+          <div class="course">
+            <h3>> ${c.titre} <span class="badge">${c.niveau}</span></h3>
+            <p>> Auteur: <span class="cmd">${c.auteur}</span></p>
+            <p>> Prix: ${c.prix}</p>
+            <a class="cmd" href="course.html?id=${doc.id}">🔍 Voir le cours</a>
+          </div>`;
+        courseList.innerHTML += block;
+});
+}).catch(err => {
+      courseList.innerHTML = "<p style='color:#ff0033;'>> ⚠️ Erreur de chargement: " + err.message + "</p>";
+});
+  </script>
 </body>
 </html>
 ```
