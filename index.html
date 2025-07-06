@@ -3,155 +3,26 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>GAZO.SHIELD FOOTBALL 2.0</title>
-  <style>
-    body {
-      margin: 0;
-      background: #111;
-      color: #fff;
-      font-family: 'Courier New', monospace;
-      overflow: hidden;
-}
-    canvas {
-      display: block;
-      margin: auto;
-      border: 4px solid #1fffe2;
-      box-shadow: 0 0 20px #1fffe2;
-}
-    #hud {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      font-size: 18px;
-      font-weight: bold;
-      text-shadow: 0 0 5px #000;
-}
-  </style>
+  <title>CyberLab Bazaar - Terminal</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div id="hud">⏱️ Temps: 0:00 | 🔴 Barça 0 - 0 City 🔵</div>
-  <canvas id="gameCanvas" width="800" height="500"></canvas>
+  <div class="terminal">
+    <h2>> Initialisation du terminal...</h2>
+    <p>> Connexion établie ✅</p>
+    <p>> Bienvenue, agent <span class="cmd">GAZO_09</span></p>
+    <p>> Tape une commande:</p>
 
-  <script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    const hud = document.getElementById("hud");
+    <ul>
+      <li>> <a class="cmd" href="catalogue.html">catalogue</a> → Voir les cours disponibles</li>
+      <li>> <a class="cmd" href="sell.html">vendre</a> → Publier ton propre cours</li>
+      <li>> <a class="cmd" href="vault.html">vault</a> → Accéder à la zone privée 🔐</li>
+      <li>> <a class="cmd" href="download.html">télécharger</a> → Récupérer le projet complet (.zip)</li>
+    </ul>
 
-    // Load terrain image
-    const background = new Image();
-    background.src = "https://upload.wikimedia.org/wikipedia/commons/6/6d/Soccer_field_blank.svg";
-
-    // Load logos
-    const barcaLogo = new Image();
-    barcaLogo.src = "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/1200px-FC_Barcelona_%28crest%29.svg.png";
-    const cityLogo = new Image();
-    cityLogo.src = "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png";
-
-    let score = { barca: 0, city: 0};
-    let startTime = Date.now();
-
-    const players = [
-      { x: 150, y: 250, color: "red", name: "Messi", team: "Barça", speed: 4},
-      { x: 650, y: 250, color: "blue", name: "Haaland", team: "City", speed: 4.2}
-    ];
-
-    const ball = { x: 400, y: 250, radius: 8, dx: 0, dy: 0};
-
-    document.addEventListener("keydown", (e) => keys[e.key] = true);
-    document.addEventListener("keyup", (e) => keys[e.key] = false);
-    let keys = {};
-
-    function drawScene() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-      drawLogos();
-      drawBall();
-      players.forEach(drawPlayer);
-}
-
-    function drawPlayer(p) {
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 15, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = "#fff";
-      ctx.font = "12px Courier";
-      ctx.fillText(p.name, p.x - 20, p.y - 20);
-}
-
-    function drawBall() {
-      ctx.fillStyle = "#fff";
-      ctx.beginPath();
-      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-      ctx.fill();
-}
-
-    function drawLogos() {
-      ctx.drawImage(barcaLogo, 20, 20, 40, 40);
-      ctx.drawImage(cityLogo, 740, 20, 40, 40);
-}
-
-    function movePlayers() {
-      let p = players[0]; // control Messi
-      if (keys["ArrowUp"]) p.y -= p.speed;
-      if (keys["ArrowDown"]) p.y += p.speed;
-      if (keys["ArrowLeft"]) p.x -= p.speed;
-      if (keys["ArrowRight"]) p.x += p.speed;
-
-      if (keys[" "]) {
-        ball.dx = (ball.x - p.x) * 0.1;
-        ball.dy = (ball.y - p.y) * 0.1;
-}
-}
-
-    function updateBall() {
-      ball.x += ball.dx;
-      ball.y += ball.dy;
-      ball.dx *= 0.98;
-      ball.dy *= 0.98;
-
-      checkGoal();
-}
-
-    function checkGoal() {
-      if (ball.x < 10 && ball.y> 200 && ball.y < 300) {
-        score.city += 1;
-        resetBall();
-}
-      if (ball.x> 790 && ball.y> 200 && ball.y < 300) {
-        score.barca += 1;
-        resetBall();
-}
-}
-
-    function resetBall() {
-      ball.x = 400;
-      ball.y = 250;
-      ball.dx = 0;
-      ball.dy = 0;
-}
-
-    function updateHud() {
-      let now = Date.now();
-      let seconds = Math.floor((now - startTime) / 1000);
-      let min = Math.floor(seconds / 60);
-      let sec = seconds % 60;
-      let timeStr = `${min}:${sec < 10? "0": ""}${sec}`;
-      hud.innerHTML = `⏱️ Temps: ${timeStr} | 🔴 Barça ${score.barca} - ${score.city} City 🔵`;
-}
-
-    function loop() {
-      movePlayers();
-      updateBall();
-      drawScene();
-      updateHud();
-      requestAnimationFrame(loop);
-}
-
-    loop();
-  </script>
+    <p>> Statut: Système stable / Crypto nodes connectés / OSINT Ready</p>
+    <p class="terminal-hint">> Tape ou clique une commande pour accéder à la connaissance clandestine.</p>
+  </div>
 </body>
 </html>
 ```
