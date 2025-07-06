@@ -1,0 +1,92 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Vault CyberLab 🔒</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+.vault,.terminal {
+      background-color: #111;
+      border: 1px dashed #00ff99;
+      padding: 25px;
+      margin-top: 40px;
+      border-radius: 6px;
+      box-shadow: 0 0 15px #00ff99;
+      max-width: 700px;
+      margin: auto;
+      font-family: 'Courier New', monospace;
+}
+
+    input {
+      width: 100%;
+      padding: 10px;
+      background-color: #000;
+      border: 1px solid #00ff99;
+      color: #00ff99;
+}
+
+.access-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #ff0066;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+}
+
+.vault-content {
+      margin-top: 20px;
+      padding: 15px;
+      background: #000;
+      border: 1px solid #00ff99;
+      border-radius: 5px;
+      display: none;
+}
+
+.error-msg {
+      color: #ff0033;
+      margin-top: 10px;
+      font-weight: bold;
+}
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <h2>> VAULT CYBERLAB 🔐</h2>
+    <p>> Accès réservé aux agents certifiés Elite</p>
+    <input type="password" id="vaultKey" placeholder="⌨️ Entrer mot de passe d'accès">
+    <button class="access-btn" onclick="checkVault()">🔓 Déverrouiller</button>
+    <p class="error-msg" id="error"></p>
+
+    <div class="vault-content" id="vaultContent">
+      <h3>> 📁 Contenu secret débloqué:</h3>
+      <ul>
+        <li>📦 VM “Dark Linux Forensics”</li>
+        <li>📼 Red Team – vidéo niveau 3</li>
+        <li>📜 Script Python malware zero-day</li>
+      </ul>
+      <p>> Rappel: Toute action ici est loguée dans `vault.access.log`</p>
+    </div>
+  </div>
+
+  <script>
+    function checkVault() {
+      const key = document.getElementById("vaultKey").value;
+      const content = document.getElementById("vaultContent");
+      const error = document.getElementById("error");
+
+      if (key === "cybergazovault2025") {
+        content.style.display = "block";
+        error.textContent = "";
+} else {
+        error.textContent = "⛔ Mot de passe incorrect. Accès refusé.";
+        content.style.display = "none";
+}
+}
+  </script>
+</body>
+</html>
+```
