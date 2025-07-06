@@ -1,30 +1,53 @@
-<html lang="fr"><head></head><body>```html
-
-
-
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
   <meta charset="UTF-8">
-  <title>GAZO WORLD</title>
-  <style>
-    body {
-      background: black;
-      color: lime;
-      font-family: monospace;
-      text-align: center;
-      padding-top: 100px;
-}
-    h1 {
-      font-size: 4em;
-      animation: pulse 1.5s infinite;
-}
-    @keyframes pulse {
-      0%, 100% { opacity: 1;}
-      50% { opacity: 0.4;}
-}
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ma Boutique</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+  <header>
+    <h1>Bienvenue sur Ma Boutique</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="produits.html">Produits</a></li>
+        <li><a href="panier.html">Panier</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <h1>🌐 GAZO WORLD 🌐</h1>
-  <p>&gt; Connexion au serveur... accès restreint</p>
+  <main>
+    <section class="hero">
+      <h2>Découvrez nos meilleures offres !</h2>
+      <p>Des produits de qualité à des prix imbattables.</p>
+    </section>
 
+    <section class="produits">
+      <div class="produit">
+        <img src="produit1.jpg" alt="Produit 1">
+        <h3>Produit 1</h3>
+        <p>Prix : 19.99€</p>
+        <button>Ajouter au panier</button>
+      </div>
 
-```</body></html>
+      <div class="produit">
+        <img src="produit2.jpg" alt="Produit 2">
+        <h3>Produit 2</h3>
+        <p>Prix : 24.99€</p>
+
+<button>Ajouter au panier</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Ma Boutique - Tous droits réservés</p>
+  </footer>
+
+</body>
+</html>
