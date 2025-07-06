@@ -3,84 +3,79 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Vendre un cours | CyberLab Bazaar</title>
+  <title>Vendre un cours | CyberLab</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    form {
-      background-color: #111;
-      border: 1px solid #00ff99;
-      padding: 20px;
-      margin-top: 40px;
-      border-radius: 6px;
-      box-shadow: 0 0 10px #00ff99;
-      max-width: 700px;
-}
-
-    label {
-      display: block;
-      margin: 12px 0 6px;
-      font-weight: bold;
-}
-
-    input, textarea, select {
-      width: 100%;
-      padding: 8px;
-      background-color: #000;
-      border: 1px solid #00ff99;
-      color: #00ff99;
-      font-family: 'Courier New', monospace;
-}
-
-.submit-btn {
-      background-color: #ff0066;
-      border: none;
-      padding: 12px 24px;
-      margin-top: 20px;
-      font-weight: bold;
-      color: #fff;
-      cursor: pointer;
-      border-radius: 5px;
-      box-shadow: 0 0 10px #ff0066;
-}
-
-.submit-btn:hover {
-      background-color: #ff3399;
-}
-  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <div class="terminal">
     <h2>> 🎓 Formulaire - Vendre un cours</h2>
     <p>> Agent connecté: <strong class="cmd">GAZO_09</strong> | Accès: Formateur 🔓</p>
 
-    <form action="#" method="post">
+    <form id="sellForm">
       <label for="title">Titre du cours:</label>
-      <input type="text" id="title" name="title" placeholder="ex: OSINT par les ombres" required>
+      <input type="text" id="title" name="title" required>
 
       <label for="niveau">Niveau:</label>
       <select id="niveau" name="niveau">
-        <option value="débutant">Débutant</option>
-        <option value="intermédiaire">Intermédiaire</option>
-        <option value="élite">Élite</option>
+        <option value="Débutant">Débutant</option>
+        <option value="Intermédiaire">Intermédiaire</option>
+        <option value="Élite">Élite</option>
       </select>
 
-      <label for="prix">Prix (en USDT ou crypto):</label>
-      <input type="text" id="prix" name="prix" placeholder="ex: 0.0057 ETH">
+      <label for="prix">Prix (BTC / ETH / USDT):</label>
+      <input type="text" id="prix" name="prix" required>
 
-      <label for="tags">Tags (séparés par des virgules):</label>
-      <input type="text" id="tags" name="tags" placeholder="ex: OSINT, Anonymat, Scripts">
+      <label for="tags">Tags:</label>
+      <input type="text" id="tags" name="tags" placeholder="Ex: linux, osint">
 
       <label for="desc">Description du cours:</label>
-      <textarea id="desc" name="desc" rows="5" placeholder="Ce cours vous apprendra à traquer sans être vu..." required></textarea>
-
-      <label for="file">Fichier ZIP / PDF / VM:</label>
-      <input type="file" id="file" name="file">
+      <textarea id="desc" name="desc" rows="5" required></textarea>
 
       <button type="submit" class="submit-btn">📤 Publier le cours</button>
     </form>
 
-    <p class="terminal-hint">> Une fois validé, ton cours apparaîtra dans le <a class="cmd" href="catalogue.html">catalogue</a>. Surveillance activée par `admin@cyberlab`.</p>
+    <p class="terminal-hint">> Le cours apparaîtra automatiquement dans le catalogue si la base est bien connectée.</p>
   </div>
+
+  <script>
+    // Configuration Firebase à personnaliser
+    const firebaseConfig = {
+      apiKey: "TON_API_KEY",
+      authDomain: "TON_PROJET.firebaseapp.com",
+      projectId: "TON_PROJECT_ID"
+};
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    document.getElementById("sellForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const titre = document.getElementById("title").value;
+      const niveau = document.getElementById("niveau").value;
+      const prix = document.getElementById("prix").value;
+      const tags = document.getElementById("tags").value.split(",").map(t => t.trim());
+      const desc = document.getElementById("desc").value;
+
+      try {
+        await db.collection("courses").add({
+          titre,
+          niveau,
+          prix,
+          tags,
+          description: desc,
+          auteur: "GAZO_09",
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+});
+        alert("✅ Cours publié avec succès!");
+        document.getElementById("sellForm").reset();
+} catch (err) {
+        alert("❌ Erreur: " + err.message);
+}
+});
+  </script>
 </body>
 </html>
 ```
