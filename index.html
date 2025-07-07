@@ -53,37 +53,33 @@
   <div id="inputLine"><input id="commandInput" placeholder="Tape une commande..." autofocus /></div>
 
   <script>
-    // 🔮 Alias spectre généré
     const aliases = ["PhantomX", "RootSpectre", "EchoHunter", "ZeroPulse", "SynCrawler", "NullRoot", "BlackSignal", "CodeDrifter", "GhostQuant"];
     const alias = aliases[Math.floor(Math.random() * aliases.length)] + "-" + Math.floor(Math.random() * 9999);
 
     const terminal = document.getElementById("terminal");
     const input = document.getElementById("commandInput");
+    let produitsCache = [];
 
     const log = (msg) => {
       terminal.textContent += "\n" + msg;
       terminal.scrollTop = terminal.scrollHeight;
 };
 
-    // 🌌 Séquence d'entrée
     setTimeout(() => log(`> Alias généré: ${alias}`), 1000);
     setTimeout(() => log(`> Chargement de l’environnement psychique...`), 2000);
     setTimeout(() => log(`> Phase active: UMBRA-9`), 3000);
     setTimeout(() => log(`> Tape une commande: help | list | buy [ID] | inject --spectreMode`), 4000);
 
-    // 🧿 Curseur animé
     const cursor = document.createElement("span");
     cursor.id = "cursor";
     cursor.textContent = "_";
     terminal.appendChild(cursor);
 
-    // 🎵 Ambiance sonore
     const audio = new Audio("https://files.coding.space/glitch_intro.ogg");
     audio.loop = true;
     audio.volume = 0.4;
     audio.play();
 
-    // 🛠 Commandes disponibles
     const handleCommand = (cmd) => {
       const [action,...args] = cmd.trim().split(" ");
 
@@ -96,6 +92,7 @@
           fetch("produits.json")
 .then(res => res.json())
 .then(data => {
+              produitsCache = data;
               log("📦 Produits disponibles:");
               data.forEach(p => {
                 log(`#${p.id} — ${p.name}\n   💬 ${p.description}\n   💳 ${p.price} €`);
@@ -111,14 +108,26 @@
           if (!args[0]) {
             log("⚠️ Syntaxe: buy [ID]");
 } else {
-            log(`🛒 Transaction simulée: produit #${args[0]} acquis par alias ${alias}`);
+            const id = args[0];
+            const produit = produitsCache.find(p => p.id === id);
+            if (produit) {
+              log(`💸 Traitement de la transaction pour #${id}...`);
+              setTimeout(() => log(`📦 Produit: ${produit.name}`), 1000);
+
+setTimeout(() => log(`💳 Montant: ${produit.price} €`), 1500);
+              setTimeout(() => {
+                log(`✅ Achat confirmé: ${alias} a acquis "${produit.name}"`);
+                document.body.style.background = "radial-gradient(circle, #0b0b0b, #111e1d)";
+}, 2500);
+} else {
+              log(`❌ Produit introuvable: ID #${id}`);
+}
 }
           break;
 
         case "inject":
           log("⚡ SpectreMode activé: flux énergétiques augmentés.");
-
-document.body.style.background = "linear-gradient(135deg, #001a1d, #020d10)";
+          document.body.style.background = "linear-gradient(135deg, #001a1d, #020d10)";
           break;
 
         case "clear":
@@ -126,7 +135,7 @@ document.body.style.background = "linear-gradient(135deg, #001a1d, #020d10)";
           break;
 
         default:
-          log(`❌ Commande inconnue: "${cmd}". Tape ` + "`help` pour voir les options.");
+          log(`❌ Commande inconnue: "${cmd}". Tape \`help\` pour voir les options.`);
 }
 };
 
