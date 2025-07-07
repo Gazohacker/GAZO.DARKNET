@@ -1,39 +1,61 @@
 ```html
-<!-- index.html -->
+<!-- cyberbazaar.html -->
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CYBERBAZAAR // ENTRY PORTAL</title>
-  <link rel="stylesheet" href="css/hacker-style.css" />
-  <link rel="icon" href="favicon.ico" />
+  <title>CyberBazaar Singularity</title>
+  <style>
+    body {
+      background: radial-gradient(circle, #000 0%, #010a13 100%);
+      color: #00ffcc;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+      margin: 0;
+}
+    #terminal {
+      padding: 20px;
+      white-space: pre-wrap;
+      height: 90vh;
+      overflow-y: auto;
+}
+    #cursor {
+      animation: blink 1s infinite;
+}
+    @keyframes blink {
+      0%, 50% { opacity: 1}
+      51%, 100% { opacity: 0}
+}
+  </style>
 </head>
-<body class="terminal-mode">
-  <div id="boot-sequence">
-    <pre>
-░█▀▄░█▀▀░█░░░█▀▀░█▀▄░░░█▀█░█▀█░█▀▄░█░█░█▀▀░█▀▀
-░█▀▄░█▀▀░█░░░█▀▀░█▀▄░░░█░█░█░█░█▀▄░░█░░█▀▀░▀▀█
-░▀▀░░▀▀▀░▀▀▀░▀▀▀░▀░▀░░░▀░▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀▀▀
-    </pre>
-    <p class="subline">Connexion au réseau CYBERBAZAAR... <span class="blink">█</span></p>
-    <p class="subline">Analyse de l'identité... <span class="blink">█</span></p>
+<body>
+  <div id="terminal">
+> Initialisation CyberBazaar...\n
+> Génération de SpectreAlias...\n
   </div>
-
-  <div id="login-hint" class="hidden">
-    <p>💀 L'accès est réservé. Veuillez vous authentifier.</p>
-    <a href="login.html" class="link">→ Terminal d'identification</a>
-  </div>
-
-  <audio autoplay loop>
-    <source src="assets/ambience/terminal-loop.ogg" type="audio/ogg">
-  </audio>
-
   <script>
-    setTimeout(() => {
-      document.getElementById('boot-sequence').style.display = 'none';
-      document.getElementById('login-hint').classList.remove('hidden');
-}, 5000); // temps du “boot”
+    const aliases = ["PhantomX", "RootSpectre", "EchoHunter", "ZeroPulse", "SynCrawler", "NullRoot", "BlackSignal", "CodeDrifter", "GhostQuant"];
+    const alias = aliases[Math.floor(Math.random() * aliases.length)] + "-" + Math.floor(Math.random() * 9999);
+
+    const terminal = document.getElementById("terminal");
+    const log = msg => terminal.textContent += msg + "\n";
+
+    setTimeout(() => log(`> Alias généré: ${alias}`), 1000);
+    setTimeout(() => log(`> Chargement de l’environnement psychique...`), 2000);
+    setTimeout(() => log(`> Phase active: UMBRA-9\n`), 3000);
+    setTimeout(() => log(`> Tape une commande pour commencer:\n> help\n> list\n> buy 4093\n> inject --spectreMode\n`), 4000);
+
+    // Curseur animé
+    const cursor = document.createElement("span");
+    cursor.id = "cursor";
+    cursor.textContent = "_";
+    terminal.appendChild(cursor);
+
+    // Son d’ambiance en fond (optionnel)
+    const audio = new Audio("https://files.coding.space/glitch_intro.ogg"); // lien à remplacer par ton propre fichier
+    audio.loop = true;
+    audio.volume = 0.4;
+    audio.play();
   </script>
 </body>
 </html>
