@@ -1,81 +1,74 @@
 ```html
+<!-- sell.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Vendre un cours | CyberLab</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-</head>
-<body>
-  <div class="terminal">
-    <h2>> 🎓 Formulaire - Vendre un cours</h2>
-    <p>> Agent connecté: <strong class="cmd">GAZO_09</strong> | Accès: Formateur 🔓</p>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SELL MODULE // CYBERBAZAAR</title>
+  <link rel="stylesheet" href="css/hacker-style.css" />
 
-    <form id="sellForm">
-      <label for="title">Titre du cours:</label>
-      <input type="text" id="title" name="title" required>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
-      <label for="niveau">Niveau:</label>
-      <select id="niveau" name="niveau">
-        <option value="Débutant">Débutant</option>
-        <option value="Intermédiaire">Intermédiaire</option>
-        <option value="Élite">Élite</option>
-      </select>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
 
-      <label for="prix">Prix (BTC / ETH / USDT):</label>
-      <input type="text" id="prix" name="prix" required>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      verifierAccesAutorise(["vendeur", "admin"]);
 
-      <label for="tags">Tags:</label>
-      <input type="text" id="tags" name="tags" placeholder="Ex: linux, osint">
+      document.getElementById("form-produit").addEventListener("submit", e => {
+        e.preventDefault();
 
-      <label for="desc">Description du cours:</label>
-      <textarea id="desc" name="desc" rows="5" required></textarea>
+        const titre = document.getElementById("titre").value;
+        const description = document.getElementById("description").value;
+        const prix = parseFloat(document.getElementById("prix").value);
 
-      <button type="submit" class="submit-btn">📤 Publier le cours</button>
-    </form>
-
-    <p class="terminal-hint">> Le cours apparaîtra automatiquement dans le catalogue si la base est bien connectée.</p>
-  </div>
-
-  <script>
-    // Configuration Firebase à personnaliser
-    const firebaseConfig = {
-      apiKey: "TON_API_KEY",
-      authDomain: "TON_PROJET.firebaseapp.com",
-      projectId: "TON_PROJECT_ID"
-};
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    document.getElementById("sellForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const titre = document.getElementById("title").value;
-      const niveau = document.getElementById("niveau").value;
-      const prix = document.getElementById("prix").value;
-      const tags = document.getElementById("tags").value.split(",").map(t => t.trim());
-      const desc = document.getElementById("desc").value;
-
-      try {
-        await db.collection("courses").add({
+        db.collection("produits").add({
           titre,
-          niveau,
+          description,
           prix,
-          tags,
-          description: desc,
-          auteur: "GAZO_09",
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+})
+.then(() => {
+          alert("✅ Produit publié!");
+          window.location.href = "dashboard.html";
+})
+.catch(err => {
+          console.error("❌ Erreur:", err.message);
+          alert("Erreur: " + err.message);
 });
-        alert("✅ Cours publié avec succès!");
-        document.getElementById("sellForm").reset();
-} catch (err) {
-        alert("❌ Erreur: " + err.message);
-}
+});
 });
   </script>
+</head>
+
+<body class="terminal-mode">
+  <div id="sell-interface">
+    <pre class="glitch-text">
+UPLOAD MODULE // CYBERBAZAAR
+----------------------------------
+Déployer un nouveau produit dans le marché sécurisé
+    </pre>
+
+    <form id="form-produit" class="subline">
+      <label>Titre:</label><br/>
+      <input type="text" id="titre" required /><br/><br/>
+
+      <label>Description:</label><br/>
+      <textarea id="description" required></textarea><br/><br/>
+
+      <label>Prix (€):</label><br/>
+      <input type="number" id="prix" step="0.01" required /><br/><br/>
+
+      <button type="submit">📦 Publier le produit</button>
+    </form>
+
+    <p class="subline"><a class="link" href="dashboard.html">⬅ Retour terminal</a></p>
+  </div>
 </body>
 </html>
 ```
