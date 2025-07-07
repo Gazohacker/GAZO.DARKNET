@@ -12,11 +12,11 @@
  * ✅ Sécurisation d’accès aux pages
  */
 
-// ⚠️ S'assurer que firebase est initialisé avant ce fichier
-// const auth = firebase.auth();  ← inutile ici si déjà défini globalement
+// ⚠️ S'assurer que firebase est bien initialisé avant ce fichier
+// const auth = firebase.auth(); ← déjà défini dans firebase-config.js
 // const db = firebase.firestore(); ← idem
 
-// ✅ Inscription (à utiliser sur register.html)
+// ✅ Inscription (appelée dans register.html)
 function inscrire(email, password, pseudo, role = "client") {
   auth.createUserWithEmailAndPassword(email, password)
 .then(cred => {
@@ -38,7 +38,7 @@ function inscrire(email, password, pseudo, role = "client") {
 });
 }
 
-// 🔓 Connexion
+// 🔓 Connexion (appelée dans login.html)
 function connecter(email, password) {
   auth.signInWithEmailAndPassword(email, password)
 .then(cred => {
@@ -81,10 +81,11 @@ function deconnecter() {
 })
 .catch(err => {
       console.error("❌ Erreur déconnexion:", err.message);
+      alert("Erreur: " + err.message);
 });
 }
 
-// 🛡️ Vérifie si utilisateur a accès à une page protégée
+// 🛡️ Vérifie si utilisateur connecté a accès à une page protégée
 function verifierAccesAutorise(rolesAutorises = []) {
   auth.onAuthStateChanged(user => {
     if (user) {
@@ -109,6 +110,31 @@ function verifierAccesAutorise(rolesAutorises = []) {
       // Non connecté
       window.location.href = "login.html";
 }
+});
+}
+
+// 🔑 Connexion avec Google
+function connexionGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  auth.signInWithPopup(provider)
+.then(result => {
+      const user = result.user;
+
+      return db.collection("users").doc(user.uid).set({
+        uid: user.uid,
+        email: user.email,
+        pseudo: user.displayName || "AgentX",
+        role: "client",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+}, { merge: true});
+})
+.then(() => {
+      window.location.href = "dashboard.html";
+})
+.catch(error => {
+      console.error("❌ Connexion Google échouée:", error.message);
+      alert("Erreur: " + error.message);
 });
 }
 ```
