@@ -1,0 +1,108 @@
+```html
+<!-- catalogue.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CATALOGUE // CYBERBAZAAR</title>
+  <link rel="stylesheet" href="css/hacker-style.css" />
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+
+  <style>
+.produit {
+      border: 1px dashed #00ff99;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: rgba(0, 255, 100, 0.05);
+}
+.produit:hover {
+      background: rgba(0, 255, 100, 0.1);
+}
+.titre {
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #00ff99;
+}
+    #filtre {
+      width: 100%;
+      margin-bottom: 10px;
+      background: #000;
+      border: none;
+      color: #00ff99;
+      border-bottom: 1px dashed #00ff99;
+      font-family: monospace;
+      font-size: 1em;
+}
+  </style>
+</head>
+
+<body class="terminal-mode">
+  <div id="catalogue-interface">
+    <pre class="glitch-text">
+ACCÈS CATALOGUE // CYBERBAZAAR
+Téléchargement des objets cyber marchands...
+--------------------------------------------
+    </pre>
+
+    <input type="text" id="filtre" placeholder="🔍 Filtrer un produit par mot-clé..." />
+
+    <div id="zone-produits" class="subline"></div>
+    <p class="subline"><a class="link" href="dashboard.html">⬅ Retour terminal</a></p>
+  </div>
+
+  <script>
+    const zone = document.getElementById("zone-produits");
+    const inputFiltre = document.getElementById("filtre");
+
+    function afficher(produits) {
+      zone.innerHTML = '';
+      produits.forEach(p => {
+        const bloc = document.createElement("div");
+        bloc.className = "produit";
+        bloc.innerHTML = `
+          <div class="titre">${p.titre}</div>
+          <div>${p.description}</div>
+          <div>💰 ${p.prix.toFixed(2)} €</div>
+        `;
+        zone.appendChild(bloc);
+});
+}
+
+    function chargerProduits() {
+      db.collection("produits")
+.orderBy("createdAt", "desc")
+.onSnapshot(snapshot => {
+          const liste = [];
+          snapshot.forEach(doc => liste.push(doc.data()));
+          afficher(liste);
+
+          inputFiltre.addEventListener("input", () => {
+            const terme = inputFiltre.value.toLowerCase();
+            const filtres = liste.filter(p =>
+              p.titre.toLowerCase().includes(terme) ||
+              p.description.toLowerCase().includes(terme)
+);
+            afficher(filtres);
+});
+});
+}
+
+    document.addEventListener("DOMContentLoaded", () => {
+      chargerProduits();
+});
+  </script>
+
+  <audio autoplay loop>
+    <source src="assets/ambience/catalog-beep.ogg" type="audio/ogg">
+  </audio>
+</body>
+</html>
+```
