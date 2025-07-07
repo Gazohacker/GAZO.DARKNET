@@ -1,94 +1,77 @@
 ```html
+<!-- dashboard.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard Agent | CyberLab</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-.dashboard {
-      background: #111;
-      padding: 30px;
-      margin: 40px auto;
-      border-radius: 8px;
-      max-width: 750px;
-      border: 1px solid #00ff99;
-      box-shadow: 0 0 10px #00ff99;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DASHBOARD // CYBERBAZAAR</title>
+  <link rel="stylesheet" href="css/hacker-style.css" />
 
-.level {
-      font-size: 1.2em;
-      color: #ff0066;
-}
+  <!-- Firebase Core -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
-.progress-bar {
-      background: #000;
-      border: 1px solid #00ff99;
-      margin-top: 10px;
-      height: 20px;
-      position: relative;
-      border-radius: 5px;
-}
+  <!-- Config & Auth -->
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js" defer></script>
 
-.progress {
-      background: #00ff99;
-      height: 100%;
-      width: 68%;
-      border-radius: 5px;
-}
+  <!-- Terminal UI & Data -->
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          db.collection("users").doc(user.uid).get().then(doc => {
+            const data = doc.data();
+            document.getElementById("user-pseudo").textContent = data.pseudo;
+            document.getElementById("user-role").textContent = data.role;
 
-.badge-list {
-      margin-top: 20px;
+            if (data.role === "admin") {
+              document.getElementById("admin-zone").classList.remove("hidden");
 }
+            if (data.role === "vendeur") {
+              document.getElementById("vendor-zone").classList.remove("hidden");
+}
+});
+} else {
+          window.location.href = "login.html";
+}
+});
+});
 
-.badge {
-      background-color: #222;
-      color: #00ff99;
-      display: inline-block;
-      border: 1px solid #00ff99;
-      padding: 6px 10px;
-      border-radius: 4px;
-      margin: 5px;
-      font-size: 0.85em;
+    function activerModuleCrypto() {
+      alert("🪙 Générateur de portefeuille crypté activé!");
+      // futur module: générateur de seed ou QR PGP
 }
-
-.module {
-      margin-top: 10px;
-      padding-left: 15px;
-}
-  </style>
+  </script>
 </head>
-<body>
-  <div class="terminal dashboard">
-    <h2>> DASHBOARD DE L’AGENT</h2>
-    <p>> Identifiant: <strong class="cmd">GAZO_09</strong></p>
-    <p>> Rang actuel: <span class="level">Elite</span></p>
-    <p>> XP: 680 / 1000</p>
 
-    <div class="progress-bar">
-      <div class="progress"></div>
-    </div>
+<body class="terminal-mode">
+  <div id="terminal-dashboard">
+    <pre class="glitch-text">
+[+] Connexion au Terminal CYBERBAZAAR établie
+[~] Chargement des données utilisateur...
+-------------------------------------------
+    </pre>
 
-    <div class="badge-list">
-      <h3>> Badges débloqués:</h3>
-      <span class="badge">🎓 Débutant</span>
-      <span class="badge">🧪 Analyseur Réseau</span>
-      <span class="badge">🕵️ OSINT Niveau 1</span>
-      <span class="badge">🔓 Accès Vault</span>
-    </div>
+    <p>🎭 Identité: <span id="user-pseudo">chargement...</span></p>
+    <p>🛡️ Rôle: <span id="user-role">chargement...</span></p>
 
-    <div class="module">
-      <h3>> Modules terminés:</h3>
-      <ul>
-        <li>> 🛡️ Kali Linux Intro ✔️</li>
-        <li>> 🔍 Reconnaissance passive ✔️</li>
-        <li>> ⏳ Crypto wallet tutorial 🕐 (en cours)</li>
-      </ul>
-    </div>
+    <hr style="margin: 1em 0; opacity: 0.3;" />
 
-    <p class="terminal-hint">> Prochain rang: <strong>LÉGENDE</strong> à 1000 XP. Continue d’explorer la base, agent.</p>
-    <p>> Commandes: <a class="cmd" href="index.html">index</a> | <a class="cmd" href="ctf.html">ctf</a> | <a class="cmd" href="vault.html">vault</a></p>
+    <ul class="subline">
+      <li><a class="link" href="catalogue.html">🛒 Explorer les objets cyber</a></li>
+      <li id="vendor-zone" class="hidden"><a class="link" href="sell.html">📤 Publier un nouveau produit</a></li>
+      <li id="admin-zone" class="hidden"><a class="link" href="admin.html">🧬 Accès Admin: logs & modules</a></li>
+      <li><a class="link" href="#" onclick="activerModuleCrypto()">🪙 Activer le module crypto</a></li>
+      <li><a class="link" href="#" onclick="deconnecter()">🚪 Déconnexion</a></li>
+    </ul>
   </div>
+
+  <audio autoplay loop>
+    <source src="assets/ambience/glitch-beacon.ogg" type="audio/ogg" />
+  </audio>
 </body>
 </html>
 ```
