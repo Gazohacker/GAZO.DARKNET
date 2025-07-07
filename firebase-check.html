@@ -12,15 +12,17 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
-  <!-- Fichiers projet -->
+  <!-- Fichier de configuration Firebase -->
   <script src="js/firebase-config.js"></script>
 </head>
+
 <body class="terminal-mode">
   <h1>🧪 Test Firebase</h1>
+
   <button onclick="testerConnexion()">🔎 Tester Auth</button>
   <button onclick="testerFirestore()">📦 Tester Firestore</button>
 
-  <pre id="resultat" style="color: #00ff99;"></pre>
+  <pre id="resultat" style="color: #00ff99; background: #000; padding: 10px; font-family: monospace;"></pre>
 
   <script>
     function afficher(msg) {
@@ -28,10 +30,14 @@
       zone.textContent += "\n" + msg;
 }
 
+    // 🔐 Test d'inscription utilisateur temporaire
     function testerConnexion() {
-      auth.createUserWithEmailAndPassword("test@example.com", "cybertest")
+      const emailTest = "testuser_" + Date.now() + "@example.com";
+      const motDePasse = "CyberTest123!"; // Mot de passe robuste
+
+      auth.createUserWithEmailAndPassword(emailTest, motDePasse)
 .then(user => {
-          afficher("✅ Utilisateur de test créé avec succès: " + user.user.uid);
+          afficher("✅ Utilisateur de test créé avec succès: " + user.user.email);
           return auth.signOut();
 })
 .catch(err => {
@@ -39,6 +45,7 @@
 });
 }
 
+    // 📦 Test d'écriture dans Firestore
     function testerFirestore() {
       db.collection("test").add({
         test: true,
@@ -47,6 +54,21 @@
 .then(() => afficher("✅ Firestore écrit avec succès"))
 .catch(err => afficher("❌ Erreur Firestore: " + err.message));
 }
+
+    // 🧠 Vérification du chargement Firebase
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        if (!firebase ||!firebase.apps.length) {
+          afficher("❌ Firebase n'est pas initialisé. Vérifie ton fichier firebase-config.js!");
+} else {
+          afficher("✅ Firebase chargé correctement.");
+          if (typeof auth === "undefined") afficher("⚠️ auth est undefined");
+          if (typeof db === "undefined") afficher("⚠️ db est undefined");
+}
+} catch (err) {
+        afficher("❌ Problème de chargement Firebase: " + err.message);
+}
+});
   </script>
 </body>
 </html>
