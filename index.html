@@ -53,63 +53,80 @@
   <div id="inputLine"><input id="commandInput" placeholder="Tape une commande..." autofocus /></div>
 
   <script>
-    // 🔮 Alias généré aléatoirement
+    // 🔮 Alias spectre généré
     const aliases = ["PhantomX", "RootSpectre", "EchoHunter", "ZeroPulse", "SynCrawler", "NullRoot", "BlackSignal", "CodeDrifter", "GhostQuant"];
     const alias = aliases[Math.floor(Math.random() * aliases.length)] + "-" + Math.floor(Math.random() * 9999);
 
-    // 💡 Initialisation du terminal
     const terminal = document.getElementById("terminal");
     const input = document.getElementById("commandInput");
 
-    const log = msg => {
+    const log = (msg) => {
       terminal.textContent += "\n" + msg;
       terminal.scrollTop = terminal.scrollHeight;
 };
 
-    // 🧠 Séquence d'accueil
+    // 🌌 Séquence d'entrée
     setTimeout(() => log(`> Alias généré: ${alias}`), 1000);
     setTimeout(() => log(`> Chargement de l’environnement psychique...`), 2000);
     setTimeout(() => log(`> Phase active: UMBRA-9`), 3000);
-    setTimeout(() => log(`> Tape une commande pour commencer:\n> help\n> list\n> buy 4093\n> inject --spectreMode\n`), 4000);
+    setTimeout(() => log(`> Tape une commande: help | list | buy [ID] | inject --spectreMode`), 4000);
 
-    // 🧿 Curseur visuel animé
+    // 🧿 Curseur animé
     const cursor = document.createElement("span");
     cursor.id = "cursor";
     cursor.textContent = "_";
     terminal.appendChild(cursor);
 
-    // 🔊 Ambiance sonore glitch (optionnel)
+    // 🎵 Ambiance sonore
     const audio = new Audio("https://files.coding.space/glitch_intro.ogg");
     audio.loop = true;
     audio.volume = 0.4;
     audio.play();
 
-    // 🛠️ Commandes du terminal
+    // 🛠 Commandes disponibles
     const handleCommand = (cmd) => {
       const [action,...args] = cmd.trim().split(" ");
+
       switch (action.toLowerCase()) {
         case "help":
-          log("📜 Commandes disponibles:\n- list\n- buy [ID]\n- inject --spectreMode\n- clear");
+          log("📜 Commandes:\n- list → afficher les produits\n- buy [ID] → simuler achat\n- inject --spectreMode\n- clear → nettoyer le terminal");
           break;
+
         case "list":
-          log("📦 Produits cyber disponibles:\n#4093 - ProxyGhost\n#4921 - DataHunter\n#4922 - AuditFury\n➡ Tape `buy 4093`");
+          fetch("produits.json")
+.then(res => res.json())
+.then(data => {
+              log("📦 Produits disponibles:");
+              data.forEach(p => {
+                log(`#${p.id} — ${p.name}\n   💬 ${p.description}\n   💳 ${p.price} €`);
+});
+              log("➡ Tape `buy [ID]` pour simuler un achat.");
+})
+.catch(() => {
+              log("❌ Erreur de chargement de produits.json");
+});
           break;
+
         case "buy":
           if (!args[0]) {
-            log("⚠️ Utilisation: buy [ID]");
+            log("⚠️ Syntaxe: buy [ID]");
 } else {
-            log(`🛒 Achat simulé: Produit #${args[0]} acheté par alias ${alias}`);
+            log(`🛒 Transaction simulée: produit #${args[0]} acquis par alias ${alias}`);
 }
           break;
+
         case "inject":
-          log("⚡ SpectreMode activé: pulsations numériques amplifiées.");
-          document.body.style.background = "linear-gradient(135deg, #001a1d, #020d10)";
+          log("⚡ SpectreMode activé: flux énergétiques augmentés.");
+
+document.body.style.background = "linear-gradient(135deg, #001a1d, #020d10)";
           break;
+
         case "clear":
           terminal.textContent = "> Terminal réinitialisé.";
           break;
+
         default:
-          log(`❌ Commande inconnue: "${cmd}". Tape \`help\` pour voir les commandes.`);
+          log(`❌ Commande inconnue: "${cmd}". Tape ` + "`help` pour voir les options.");
 }
 };
 
@@ -118,8 +135,7 @@
         const cmd = input.value;
         log("> " + cmd);
         handleCommand(cmd);
-
-input.value = "";
+        input.value = "";
 }
 });
   </script>
