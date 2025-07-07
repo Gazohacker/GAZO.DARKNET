@@ -53,56 +53,63 @@
   <div id="inputLine"><input id="commandInput" placeholder="Tape une commande..." autofocus /></div>
 
   <script>
+    // 🔮 Génération de l'alias spectre
     const aliases = ["PhantomX", "RootSpectre", "EchoHunter", "ZeroPulse", "SynCrawler", "NullRoot", "BlackSignal", "CodeDrifter", "GhostQuant"];
     const alias = aliases[Math.floor(Math.random() * aliases.length)] + "-" + Math.floor(Math.random() * 9999);
 
+    // 🔧 Initialisation
     const terminal = document.getElementById("terminal");
     const input = document.getElementById("commandInput");
+
     const log = msg => {
       terminal.textContent += "\n" + msg;
       terminal.scrollTop = terminal.scrollHeight;
 };
 
-    // Initialisation séquentielle
+    // 🧠 Intro séquentielle
     setTimeout(() => log(`> Alias généré: ${alias}`), 1000);
     setTimeout(() => log(`> Chargement de l’environnement psychique...`), 2000);
     setTimeout(() => log(`> Phase active: UMBRA-9`), 3000);
     setTimeout(() => log(`> Tape une commande pour commencer:\n> help\n> list\n> buy 4093\n> inject --spectreMode\n`), 4000);
 
-    // Curseur animé
+    // 🧿 Curseur visuel
     const cursor = document.createElement("span");
     cursor.id = "cursor";
     cursor.textContent = "_";
     terminal.appendChild(cursor);
 
-    // Son d’ambiance en fond (optionnel)
+    // 🔊 Ambiance sonore glitch
     const audio = new Audio("https://files.coding.space/glitch_intro.ogg");
     audio.loop = true;
     audio.volume = 0.4;
     audio.play();
 
-    // Commandes dynamiques
+    // 💬 Commandes dynamiques
     const handleCommand = (cmd) => {
       const [action,...args] = cmd.trim().split(" ");
       switch (action.toLowerCase()) {
         case "help":
-          log("Commandes disponibles:\n- list\n- buy [ID]\n- inject --spectreMode\n- clear");
+          log("📜 Commandes disponibles:\n- list\n- buy [ID]\n- inject --spectreMode\n- clear");
           break;
         case "list":
-          log("Produits cyber:\n#4093 - ProxyGhost\n#4921 - DataHunter\n#4922 - AuditFury\nTape `buy 4093`");
+          log("📦 Produits cyber:\n#4093 - ProxyGhost\n#4921 - DataHunter\n#4922 - AuditFury\n➡ Tape `buy 4093`");
           break;
         case "buy":
-          log(`🛒 Achat simulé: Produit #${args[0]} acheté par ${alias}`);
+          if (!args[0]) {
+            log("⚠️ Utilisation: buy [ID]");
+} else {
+            log(`🛒 Achat simulé: Produit #${args[0]} acheté par ${alias}`);
+}
           break;
         case "inject":
-          log("SpectreMode activé: pulsations numériques amplifiées.");
+          log("⚡ SpectreMode activé: pulsations numériques amplifiées.");
           document.body.style.background = "linear-gradient(135deg, #001a1d, #020d10)";
           break;
         case "clear":
           terminal.textContent = "> Terminal réinitialisé.";
           break;
         default:
-          log(`Commande inconnue: "${cmd}". Tape \`help\` pour lister.`);
+          log(`❌ Commande inconnue: "${cmd}". Tape \`help\` pour voir les commandes.`);
 }
 };
 
@@ -110,10 +117,12 @@
       if (e.key === "Enter") {
         const cmd = input.value;
         log("> " + cmd);
-        handleCommand(cmd);
+
+handleCommand(cmd);
         input.value = "";
 }
 });
   </script>
 </body>
-</html>```
+</html>
+```
