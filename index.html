@@ -53,11 +53,11 @@
   <div id="inputLine"><input id="commandInput" placeholder="Tape une commande..." autofocus /></div>
 
   <script>
-    // 🔮 Génération de l'alias spectre
+    // 🔮 Alias généré aléatoirement
     const aliases = ["PhantomX", "RootSpectre", "EchoHunter", "ZeroPulse", "SynCrawler", "NullRoot", "BlackSignal", "CodeDrifter", "GhostQuant"];
     const alias = aliases[Math.floor(Math.random() * aliases.length)] + "-" + Math.floor(Math.random() * 9999);
 
-    // 🔧 Initialisation
+    // 💡 Initialisation du terminal
     const terminal = document.getElementById("terminal");
     const input = document.getElementById("commandInput");
 
@@ -66,25 +66,25 @@
       terminal.scrollTop = terminal.scrollHeight;
 };
 
-    // 🧠 Intro séquentielle
+    // 🧠 Séquence d'accueil
     setTimeout(() => log(`> Alias généré: ${alias}`), 1000);
     setTimeout(() => log(`> Chargement de l’environnement psychique...`), 2000);
     setTimeout(() => log(`> Phase active: UMBRA-9`), 3000);
     setTimeout(() => log(`> Tape une commande pour commencer:\n> help\n> list\n> buy 4093\n> inject --spectreMode\n`), 4000);
 
-    // 🧿 Curseur visuel
+    // 🧿 Curseur visuel animé
     const cursor = document.createElement("span");
     cursor.id = "cursor";
     cursor.textContent = "_";
     terminal.appendChild(cursor);
 
-    // 🔊 Ambiance sonore glitch
+    // 🔊 Ambiance sonore glitch (optionnel)
     const audio = new Audio("https://files.coding.space/glitch_intro.ogg");
     audio.loop = true;
     audio.volume = 0.4;
     audio.play();
 
-    // 💬 Commandes dynamiques
+    // 🛠️ Commandes du terminal
     const handleCommand = (cmd) => {
       const [action,...args] = cmd.trim().split(" ");
       switch (action.toLowerCase()) {
@@ -92,13 +92,13 @@
           log("📜 Commandes disponibles:\n- list\n- buy [ID]\n- inject --spectreMode\n- clear");
           break;
         case "list":
-          log("📦 Produits cyber:\n#4093 - ProxyGhost\n#4921 - DataHunter\n#4922 - AuditFury\n➡ Tape `buy 4093`");
+          log("📦 Produits cyber disponibles:\n#4093 - ProxyGhost\n#4921 - DataHunter\n#4922 - AuditFury\n➡ Tape `buy 4093`");
           break;
         case "buy":
           if (!args[0]) {
             log("⚠️ Utilisation: buy [ID]");
 } else {
-            log(`🛒 Achat simulé: Produit #${args[0]} acheté par ${alias}`);
+            log(`🛒 Achat simulé: Produit #${args[0]} acheté par alias ${alias}`);
 }
           break;
         case "inject":
@@ -117,9 +117,9 @@
       if (e.key === "Enter") {
         const cmd = input.value;
         log("> " + cmd);
+        handleCommand(cmd);
 
-handleCommand(cmd);
-        input.value = "";
+input.value = "";
 }
 });
   </script>
