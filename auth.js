@@ -12,8 +12,9 @@
  * ✅ Sécurisation d’accès aux pages
  */
 
-const auth = firebase.auth();
-const db = firebase.firestore();
+// ⚠️ S'assurer que firebase est initialisé avant ce fichier
+// const auth = firebase.auth();  ← inutile ici si déjà défini globalement
+// const db = firebase.firestore(); ← idem
 
 // ✅ Inscription (à utiliser sur register.html)
 function inscrire(email, password, pseudo, role = "client") {
@@ -28,7 +29,7 @@ function inscrire(email, password, pseudo, role = "client") {
 });
 })
 .then(() => {
-      alert("✅ Compte créé!");
+      alert("✅ Compte créé avec succès!");
       window.location.href = "dashboard.html";
 })
 .catch(err => {
@@ -44,11 +45,16 @@ function connecter(email, password) {
       return db.collection("users").doc(cred.user.uid).get();
 })
 .then(doc => {
-      const role = doc.data().role;
-      redirigerParRole(role);
+      if (doc.exists) {
+        const role = doc.data().role;
+        redirigerParRole(role);
+} else {
+        throw new Error("Utilisateur non trouvé dans Firestore.");
+}
 })
 .catch(err => {
-      console.error("❌ Erreur connexion:", err.message);alert("Erreur: " + err.message);
+      console.error("❌ Erreur connexion:", err.message);
+      alert("Erreur: " + err.message);
 });
 }
 
@@ -70,23 +76,37 @@ function redirigerParRole(role) {
 function deconnecter() {
   auth.signOut()
 .then(() => {
-      console.log("👋 Déconnecté");
+      console.log("👋 Déconnecté avec succès");
       window.location.href = "login.html";
+})
+.catch(err => {
+      console.error("❌ Erreur déconnexion:", err.message);
 });
 }
 
-// 🛡️ Vérifie si utilisateur a accès
+// 🛡️ Vérifie si utilisateur a accès à une page protégée
 function verifierAccesAutorise(rolesAutorises = []) {
   auth.onAuthStateChanged(user => {
     if (user) {
-      db.collection("users").doc(user.uid).get().then(doc => {
-        const role = doc.data().role;
-        if (!rolesAutorises.includes(role)) {
-          alert("⛔ Accès refusé.");
-          window.location.href = "login.html";
+      db.collection("users").doc(user.uid).get()
+.then(doc => {
+          if (doc.exists) {
+            const role = doc.data().role;
+            if (!rolesAutorises.includes(role)) {
+              alert("⛔ Accès refusé pour ce rôle.");
+              window.location.href = "login.html";
 }
+} else {
+            alert("⛔ Utilisateur non reconnu.");
+            window.location.href = "login.html";
+}
+})
+.catch(err => {
+          console.error("❌ Erreur de vérification:", err.message);
+          window.location.href = "login.html";
 });
 } else {
+      // Non connecté
       window.location.href = "login.html";
 }
 });
