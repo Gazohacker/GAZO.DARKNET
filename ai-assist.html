@@ -1,0 +1,101 @@
+```html
+<!-- ai-assist.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI NODE // CYBERBAZAAR</title>
+  <link rel="stylesheet" href="css/hacker-style.css" />
+  <style>
+    #terminal {
+      background: #000;
+      color: #00ff99;
+      padding: 20px;
+      border: 1px dashed #00ff99;
+      width: 90%;
+      max-width: 800px;
+      margin: auto;
+      margin-top: 40px;
+      font-family: 'Share Tech Mono', monospace;
+}
+    #log {
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 0.95em;
+}
+    #input-zone {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+}
+    input {
+      flex: 1;
+      background: #000;
+      border: none;
+      color: #00ff99;
+      border-bottom: 1px dashed #00ff99;
+      font-family: monospace;
+}
+    button {
+      background: none;
+      color: #00ff99;
+      border: 1px dashed #00ff99;
+      font-family: monospace;
+      padding: 5px 10px;
+}
+  </style>
+</head>
+
+<body class="terminal-mode">
+  <div id="terminal">
+    <pre class="glitch-text">[AI CORE ACTIF 🔻] Terminal de support cybernétique</pre>
+    <div id="log">[~] Initialisation du noyau IA...</div>
+
+    <div id="input-zone">
+      <input type="text" id="prompt" placeholder="Entre ta commande ou ta question…" />
+      <button onclick="envoyerMessage()">↵</button>
+    </div>
+  </div>
+
+  <script>
+    const log = document.getElementById("log");
+
+    async function envoyerMessage() {
+      const input = document.getElementById("prompt");
+      const msg = input.value.trim();
+      if (!msg) return;
+      input.value = "";
+
+      // Ajoute la commande dans le log
+      log.innerHTML += `\n> ${msg}`;
+
+      // Simule des réponses — à remplacer par une vraie API plus tard si besoin
+      let reponse = "";
+
+      if (msg.toLowerCase().includes("catalogue")) {
+        reponse = "🛒 Le catalogue est accessible ici → /catalogue.html";
+} else if (msg.toLowerCase().includes("admin")) {
+        reponse = "🔐 Accès admin: disponible uniquement aux utilisateurs de rang root.";
+} else if (msg.toLowerCase().includes("vendeur") || msg.includes("produit")) {
+        reponse = "📤 Tu peux publier un produit depuis /sell.html après authentification.";
+} else if (msg.toLowerCase().startsWith("unlock")) {
+        reponse = "🔓 Décryptage en cours... Protocole expérimental détecté. Reste vigilant.";
+} else {
+        reponse = "🤖 Assistant IA à ton service. Pose une question ou tape une commande: 'catalogue', 'vendeur', 'unlock', etc.";
+}
+
+      setTimeout(() => {
+        log.innerHTML += `\n${reponse}`;
+        log.scrollTop = log.scrollHeight;
+}, 600);
+}
+  </script>
+
+  <audio autoplay loop>
+    <source src="assets/ambience/ai-channel.ogg" type="audio/ogg">
+  </audio>
+</body>
+</html>
+```
