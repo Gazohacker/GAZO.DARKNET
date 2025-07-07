@@ -1,0 +1,53 @@
+```html
+<!-- firebase-check.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test Firebase - CyberBazaar</title>
+  <link rel="stylesheet" href="css/hacker-style.css" />
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+  <!-- Fichiers projet -->
+  <script src="js/firebase-config.js"></script>
+</head>
+<body class="terminal-mode">
+  <h1>🧪 Test Firebase</h1>
+  <button onclick="testerConnexion()">🔎 Tester Auth</button>
+  <button onclick="testerFirestore()">📦 Tester Firestore</button>
+
+  <pre id="resultat" style="color: #00ff99;"></pre>
+
+  <script>
+    function afficher(msg) {
+      const zone = document.getElementById("resultat");
+      zone.textContent += "\n" + msg;
+}
+
+    function testerConnexion() {
+      auth.createUserWithEmailAndPassword("test@example.com", "cybertest")
+.then(user => {
+          afficher("✅ Utilisateur de test créé avec succès: " + user.user.uid);
+          return auth.signOut();
+})
+.catch(err => {
+          afficher("❌ Erreur Auth: " + err.message);
+});
+}
+
+    function testerFirestore() {
+      db.collection("test").add({
+        test: true,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+})
+.then(() => afficher("✅ Firestore écrit avec succès"))
+.catch(err => afficher("❌ Erreur Firestore: " + err.message));
+}
+  </script>
+</body>
+</html>
+```
