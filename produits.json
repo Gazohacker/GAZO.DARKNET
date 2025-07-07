@@ -1,0 +1,22 @@
+```json
+[
+  {
+    "id": "4093",
+    "name": "ProxyGhost",
+    "description": "Tunnel HTTPS ultra-léger pour masquage IP.",
+    "price": "19.99"
+},
+  {
+    "id": "4921",
+    "name": "DataHunter",
+    "description": "Script de récupération OSINT sur cibles réseau.",
+    "price": "12.49"
+},
+  {
+    "id": "4922",
+    "name": "AuditFury",
+    "description": "Outil d’audit automatisé pour serveurs Apache & NGINX.",
+    "price": "29.95"
+}
+]
+```
