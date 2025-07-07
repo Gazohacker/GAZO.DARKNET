@@ -1,0 +1,107 @@
+```html
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ADMIN CORE // CYBERBAZAAR</title>
+  <link rel="stylesheet" href="css/hacker-style.css" />
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+
+  <style>
+.bloc {
+      border: 1px dashed #00ff99;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: rgba(0, 255, 100, 0.05);
+}
+    button {
+      background: none;
+      border: 1px dashed #00ff99;
+      color: #00ff99;
+      font-family: monospace;
+      padding: 5px 10px;
+      cursor: pointer;
+}
+  </style>
+</head>
+
+<body class="terminal-mode">
+  <div id="admin-core">
+    <pre class="glitch-text">
+[ADMIN NODE ACTIVE] 🔐 Console superuser CyberBazaar
+Surveillance du réseau / Analyse des entités...
+------------------------------------------------
+    </pre>
+
+    <h3>📦 Produits</h3>
+    <div id="liste-produits"></div>
+
+    <h3>🧬 Utilisateurs</h3>
+    <div id="liste-users"></div>
+
+    <p class="subline"><a class="link" href="dashboard.html">⬅ Retour terminal</a></p>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      verifierAccesAutorise(["admin"]);
+
+      // 🔍 Produits
+      db.collection("produits").orderBy("createdAt", "desc").get().then(snapshot => {
+        const zone = document.getElementById("liste-produits");
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.className = "bloc";
+          div.innerHTML = `
+            <div><strong>${data.titre}</strong></div>
+            <div>${data.description}</div>
+            <div>💰 ${data.prix.toFixed(2)} €</div>
+            <button onclick="supprimerDoc('produits', '${doc.id}')">🗑 Supprimer</button>
+          `;
+          zone.appendChild(div);
+});
+});
+
+      // 🧠 Utilisateurs
+      db.collection("users").orderBy("createdAt", "desc").get().then(snapshot => {
+        const zone = document.getElementById("liste-users");
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.className = "bloc";
+          div.innerHTML = `
+            <div><strong>${data.pseudo}</strong></div>
+            <div>${data.email}</div>
+            <div>🎭 Rôle: ${data.role}</div>
+            <button onclick="supprimerDoc('users', '${doc.id}')">🗑 Supprimer</button>
+          `;
+          zone.appendChild(div);
+});
+});
+});
+
+    function supprimerDoc(collection, id) {
+      if (confirm("Confirmer la suppression?")) {
+        db.collection(collection).doc(id).delete()
+.then(() => location.reload())
+.catch(err => alert("Erreur: " + err.message));
+}
+}
+  </script>
+
+  <audio autoplay loop>
+    <source src="assets/ambience/admin-buzz.ogg" type="audio/ogg">
+  </audio>
+</body>
+</html>
+```
