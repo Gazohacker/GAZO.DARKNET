@@ -13,7 +13,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
-  <!-- Fichiers JS -->
+  <!-- Firebase config & logique Auth -->
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js" defer></script>
 
@@ -22,41 +22,49 @@
     function generatePseudo() {
       const roots = ["Ghost", "Neo", "Dark", "Syn", "Byte", "Root"];
       const tails = ["hunter", "x99", "flux", "sigma", "glitch"];
-      return roots[Math.floor(Math.random() * roots.length)] +
-             tails[Math.floor(Math.random() * tails.length)];
+      return (
+        roots[Math.floor(Math.random() * roots.length)] +
+        tails[Math.floor(Math.random() * tails.length)]
+);
 }
+
     document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById('pseudo').textContent = generatePseudo();
+      const pseudoSpan = document.getElementById("pseudo");
+      if (pseudoSpan) {
+        pseudoSpan.textContent = generatePseudo();
+}
 });
   </script>
 </head>
+
 <body class="terminal-mode">
   <div id="login-terminal">
     <pre class="glitch-text">
 ACCESS NODE // CYBERBAZAAR NETWORK
 AUTHORIZED PERSONNEL ONLY 🛡️
 -------------------------------
-</pre>
-    <p>👤 Identité suggérée: <span id="pseudo" class="glitch-text"></span></p>
+    </pre>
+
+    <p>👤 Identité suggérée: <span id="pseudo" class="glitch-text">...</span></p>
 
     <form onsubmit="event.preventDefault(); connecter(email.value, password.value);" class="subline">
-      <label for="email">Email:</label><br/>
+      <label for="email">📧 Email:</label><br/>
       <input type="email" id="email" required /><br/><br/>
 
-      <label for="password">Mot de passe:</label><br/>
+      <label for="password">🔐 Mot de passe:</label><br/>
       <input type="password" id="password" required /><br/><br/>
 
       <button type="submit">▶ INITIER LIAISON</button>
     </form>
 
     <p class="subline">
-      Pas encore intégré? <a class="link" href="register.html">S’inscrire</a><br/>
-      🧬 Accès clandestin: <code>inject --ghostpass</code>
+      ✳️ Pas encore intégré? <a class="link" href="register.html">Créer un compte</a><br/>
+      🧬 Code d’accès secondaire: <code>inject --ghostpass</code>
     </p>
   </div>
 
   <audio autoplay loop>
-    <source src="assets/ambience/whispers.ogg" type="audio/ogg">
+    <source src="assets/ambience/whispers.ogg" type="audio/ogg" />
   </audio>
 </body>
 </html>
