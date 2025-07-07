@@ -13,7 +13,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
-  <!-- Firebase config & logique Auth -->
+  <!-- Firebase config + auth -->
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js" defer></script>
 
@@ -22,10 +22,8 @@
     function generatePseudo() {
       const roots = ["Ghost", "Neo", "Dark", "Syn", "Byte", "Root"];
       const tails = ["hunter", "x99", "flux", "sigma", "glitch"];
-      return (
-        roots[Math.floor(Math.random() * roots.length)] +
-        tails[Math.floor(Math.random() * tails.length)]
-);
+      return roots[Math.floor(Math.random() * roots.length)] +
+             tails[Math.floor(Math.random() * tails.length)];
 }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -56,6 +54,10 @@ AUTHORIZED PERSONNEL ONLY 🛡️
 
       <button type="submit">▶ INITIER LIAISON</button>
     </form>
+
+    <hr style="opacity: 0.2;" />
+
+    <button onclick="connexionGoogle()">🔐 Connexion avec Google</button>
 
     <p class="subline">
       ✳️ Pas encore intégré? <a class="link" href="register.html">Créer un compte</a><br/>
