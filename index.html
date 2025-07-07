@@ -1,5 +1,4 @@
 ```html
-<!-- cyberbazaar.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,15 +15,33 @@
     #terminal {
       padding: 20px;
       white-space: pre-wrap;
-      height: 90vh;
+      height: 88vh;
       overflow-y: auto;
 }
-    #cursor {
-      animation: blink 1s infinite;
+    #inputLine {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+}
+    #inputLine::before {
+      content: "> ";
+      margin-right: 4px;
+}
+    input {
+      background: transparent;
+      color: #00ffcc;
+      border: none;
+      outline: none;
+      font-family: 'Courier New', monospace;
+      font-size: 1em;
+      flex: 1;
 }
     @keyframes blink {
       0%, 50% { opacity: 1}
       51%, 100% { opacity: 0}
+}
+    #cursor {
+      animation: blink 1s infinite;
 }
   </style>
 </head>
@@ -33,16 +50,23 @@
 > Initialisation CyberBazaar...\n
 > Génération de SpectreAlias...\n
   </div>
+  <div id="inputLine"><input id="commandInput" placeholder="Tape une commande..." autofocus /></div>
+
   <script>
     const aliases = ["PhantomX", "RootSpectre", "EchoHunter", "ZeroPulse", "SynCrawler", "NullRoot", "BlackSignal", "CodeDrifter", "GhostQuant"];
     const alias = aliases[Math.floor(Math.random() * aliases.length)] + "-" + Math.floor(Math.random() * 9999);
 
     const terminal = document.getElementById("terminal");
-    const log = msg => terminal.textContent += msg + "\n";
+    const input = document.getElementById("commandInput");
+    const log = msg => {
+      terminal.textContent += "\n" + msg;
+      terminal.scrollTop = terminal.scrollHeight;
+};
 
+    // Initialisation séquentielle
     setTimeout(() => log(`> Alias généré: ${alias}`), 1000);
     setTimeout(() => log(`> Chargement de l’environnement psychique...`), 2000);
-    setTimeout(() => log(`> Phase active: UMBRA-9\n`), 3000);
+    setTimeout(() => log(`> Phase active: UMBRA-9`), 3000);
     setTimeout(() => log(`> Tape une commande pour commencer:\n> help\n> list\n> buy 4093\n> inject --spectreMode\n`), 4000);
 
     // Curseur animé
@@ -52,11 +76,44 @@
     terminal.appendChild(cursor);
 
     // Son d’ambiance en fond (optionnel)
-    const audio = new Audio("https://files.coding.space/glitch_intro.ogg"); // lien à remplacer par ton propre fichier
+    const audio = new Audio("https://files.coding.space/glitch_intro.ogg");
     audio.loop = true;
     audio.volume = 0.4;
     audio.play();
+
+    // Commandes dynamiques
+    const handleCommand = (cmd) => {
+      const [action,...args] = cmd.trim().split(" ");
+      switch (action.toLowerCase()) {
+        case "help":
+          log("Commandes disponibles:\n- list\n- buy [ID]\n- inject --spectreMode\n- clear");
+          break;
+        case "list":
+          log("Produits cyber:\n#4093 - ProxyGhost\n#4921 - DataHunter\n#4922 - AuditFury\nTape `buy 4093`");
+          break;
+        case "buy":
+          log(`🛒 Achat simulé: Produit #${args[0]} acheté par ${alias}`);
+          break;
+        case "inject":
+          log("SpectreMode activé: pulsations numériques amplifiées.");
+          document.body.style.background = "linear-gradient(135deg, #001a1d, #020d10)";
+          break;
+        case "clear":
+          terminal.textContent = "> Terminal réinitialisé.";
+          break;
+        default:
+          log(`Commande inconnue: "${cmd}". Tape \`help\` pour lister.`);
+}
+};
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const cmd = input.value;
+        log("> " + cmd);
+        handleCommand(cmd);
+        input.value = "";
+}
+});
   </script>
 </body>
-</html>
-```
+</html>```
