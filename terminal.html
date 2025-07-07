@@ -1,0 +1,109 @@
+```html
+<!-- terminal.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TERMINAL // CYBERBAZAAR</title>
+  <link rel="stylesheet" href="css/hacker-style.css" />
+
+  <style>
+    #console {
+      background: #000;
+      color: #00ff99;
+      border: 1px dashed #00ff99;
+      padding: 20px;
+      width: 90%;
+      max-width: 800px;
+      margin: auto;
+      margin-top: 50px;
+      font-family: 'Share Tech Mono', monospace;
+}
+    #history {
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 0.9em;
+}
+    #prompt {
+      width: 100%;
+      background: #000;
+      border: none;
+      border-bottom: 1px dashed #00ff99;
+      color: #00ff99;
+      font-family: monospace;
+      margin-top: 10px;
+}
+  </style>
+</head>
+
+<body class="terminal-mode">
+  <div id="console">
+    <pre class="glitch-text">[~] INITIATION DU TERMINAL // PROTOCOLE CYBERBAZAAR</pre>
+    <div id="history">Tape `help` pour découvrir les commandes...</div>
+    <input type="text" id="prompt" placeholder="➤ Commande..." />
+  </div>
+
+  <script>
+    const history = document.getElementById("history");
+    const prompt = document.getElementById("prompt");
+
+    prompt.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        const cmd = prompt.value.trim().toLowerCase();
+        prompt.value = "";
+        history.innerHTML += `\n➤ ${cmd}`;
+
+        let output = "";
+
+        switch (cmd) {
+          case "help":
+            output = `
+Liste des commandes disponibles:
+ - connect: simule connexion au système
+ - list: affiche modules publics
+ - trace: active le radar fictif
+ - ai-core: accède à l'assistant IA
+ - catalogue: redirige vers /catalogue.html
+ - inject --ghostpass: débloque une entrée cachée
+ - clear: nettoie l'historique
+`;
+            break;
+          case "connect":
+            output = "[🔗] Connexion au noyau en cours...";
+            break;
+          case "list":
+            output = "Modules disponibles: login, dashboard, catalogue, sell, ai-assist";
+            break;
+          case "trace":
+            output = "[📡] Traceur orbital actif... Aucun signal suspect.";
+            break;
+          case "ai-core":
+            window.location.href = "ai-assist.html";
+            return;
+          case "catalogue":
+            window.location.href = "catalogue.html";
+            return;
+          case "inject --ghostpass":
+            output = "🔓 Accès étendu débloqué. Bienvenue, agent fantôme.";
+            break;
+          case "clear":
+            history.innerHTML = "[~] Terminal nettoyé.";
+            return;
+          default:
+            output = "[❌] Commande non reconnue. Tape `help` pour lister.";
+}
+
+        history.innerHTML += `\n${output}`;
+        history.scrollTop = history.scrollHeight;
+}
+});
+  </script>
+
+  <audio autoplay loop>
+    <source src="assets/ambience/terminal-ambient.ogg" type="audio/ogg">
+  </audio>
+</body>
+</html>
+```
