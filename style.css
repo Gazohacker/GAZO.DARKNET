@@ -1,70 +1,94 @@
 ```css
-/* === STYLES GÉNÉRAUX === */
-body {
-  background-color: #000;
+/* hacker-style.css */
+
+/* Police façon terminal */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+body.terminal-mode {
+  background-color: #000000;
   color: #00ff99;
-  font-family: 'Courier New', monospace;
-  padding: 40px;
+  font-family: 'Share Tech Mono', monospace;
+  text-shadow: 0 0 4px #00ff99;
+  overflow: hidden;
   margin: 0;
+  padding: 20px;
 }
 
-.terminal {
-  max-width: 750px;
-  margin: auto;
-  text-align: left;
+/* Clignotement du curseur */
+.blink {
+  animation: blink 0.9s step-end infinite;
 }
 
-/* === LIENS COMMANDE TERMINAL === */
-.cmd {
-  color: #ff0066;
-  font-weight: bold;
+@keyframes blink {
+  50% { opacity: 0;}
+}
+
+/* Liens cyber */
+a.link {
+  color: #00ff99;
   text-decoration: none;
-  cursor: pointer;
-  transition: color 0.3s, text-shadow 0.3s;
+  border-bottom: 1px dashed #00ff99;
+  transition: all 0.2s ease-in-out;
 }
 
-.cmd:hover {
-  color: #ff3399;
-  text-shadow: 0 0 5px #ff0066;
+a.link:hover {
+  color: #ff00ff;
+  border-bottom-color: #ff00ff;
 }
 
-.terminal-hint {
-  color: #aaa;
-  font-size: 0.85em;
-  margin-top: 30px;
+/* Texte secondaire */
+.subline {
+  margin-top: 10px;
+  font-size: 1.1em;
+  opacity: 0.85;
 }
 
-/* === STYLE DES COURS === */
-.course-list {
-  margin-top: 30px;
+/* Animation glitch sur texte */
+@keyframes glitch {
+  0% { text-shadow: 2px 0 red, -2px 0 blue;}
+  20% { text-shadow: -2px 0 red, 2px 0 blue;}
+  40% { text-shadow: 2px 0 red, -2px 0 blue;}
+  60% { text-shadow: -2px 0 red, 2px 0 blue;}
+  100% { text-shadow: 2px 0 red, -2px 0 blue;}
 }
 
-.course {
-  background-color: #111;
-  border: 1px solid #00ff99;
-  padding: 15px 20px;
-  margin-bottom: 25px;
-  border-radius: 6px;
-  box-shadow: 0 0 10px #00ff99;
-  transition: transform 0.3s ease;
+.glitch-text {
+  animation: glitch 1s infinite;
 }
 
-.course:hover {
-  transform: scale(1.015);
-  box-shadow: 0 0 15px #00ff99;
+/* Effet de scan vertical */
+@keyframes scanline {
+  0% { background-position: 0 -100%;}
+  100% { background-position: 0 100%;}
 }
 
-.course h3 {
-  color: #ff0066;
-  margin-bottom: 8px;
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,255,0,0.1) 1px, transparent 1px);
+  background-size: 100% 3px;
+  animation: scanline 5s linear infinite;
 }
 
-.badge {
-  background-color: #ff0066;
-  color: #fff;
-  font-size: 0.75em;
-  padding: 2px 6px;
-  border-radius: 3px;
-  margin-left: 8px;
+/* Bruit statique en fond */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../assets/glitch/noise.gif') repeat;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Bloc caché au démarrage */
+.hidden {
+  display: none;
 }
 ```
