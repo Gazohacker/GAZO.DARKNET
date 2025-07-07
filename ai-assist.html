@@ -29,6 +29,7 @@
       display: flex;
       gap: 10px;
       margin-top: 10px;
+      flex-wrap: wrap;
 }
     input {
       flex: 1;
@@ -44,6 +45,7 @@
       border: 1px dashed #00ff99;
       font-family: monospace;
       padding: 5px 10px;
+      cursor: pointer;
 }
   </style>
 </head>
@@ -56,6 +58,7 @@
     <div id="input-zone">
       <input type="text" id="prompt" placeholder="Entre ta commande ou ta question…" />
       <button onclick="envoyerMessage()">↵</button>
+      <button onclick="lancerEcoute()">🎙️ Parler</button>
     </div>
   </div>
 
@@ -68,10 +71,8 @@
       if (!msg) return;
       input.value = "";
 
-      // Ajoute la commande dans le log
       log.innerHTML += `\n> ${msg}`;
 
-      // Simule des réponses — à remplacer par une vraie API plus tard si besoin
       let reponse = "";
 
       if (msg.toLowerCase().includes("catalogue")) {
@@ -81,15 +82,44 @@
 } else if (msg.toLowerCase().includes("vendeur") || msg.includes("produit")) {
         reponse = "📤 Tu peux publier un produit depuis /sell.html après authentification.";
 } else if (msg.toLowerCase().startsWith("unlock")) {
-        reponse = "🔓 Décryptage en cours... Protocole expérimental détecté. Reste vigilant.";
+        reponse = "🔓 Décryptage en cours... Protocole expérimental détecté.";
 } else {
-        reponse = "🤖 Assistant IA à ton service. Pose une question ou tape une commande: 'catalogue', 'vendeur', 'unlock', etc.";
+        reponse = "🤖 Assistant IA à ton service. Pose une question ou dis: 'catalogue', 'admin', 'unlock', etc.";
 }
 
       setTimeout(() => {
         log.innerHTML += `\n${reponse}`;
         log.scrollTop = log.scrollHeight;
 }, 600);
+}
+
+    // 🎙️ Activation vocal
+    let recognition;
+    if ('webkitSpeechRecognition' in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.lang = "fr-FR";
+      recognition.interimResults = false;
+      recognition.continuous = false;
+
+      recognition.onresult = function(event) {
+        const message = event.results[0][0].transcript.trim();
+        document.getElementById("prompt").value = message;
+        envoyerMessage();
+};
+
+      recognition.onerror = function(event) {
+        console.error("Erreur vocale:", event.error);
+        alert("Erreur micro: " + event.error);
+};
+}
+
+    function lancerEcoute() {
+      if (recognition) {
+        recognition.start();
+        log.innerHTML += "\n🎧 [Assistant vocal activé...]";
+} else {
+        alert("Le navigateur ne supporte pas la reconnaissance vocale.");
+}
 }
   </script>
 
