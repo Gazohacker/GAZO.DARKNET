@@ -1,28 +1,40 @@
 ```html
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>CyberLab Bazaar - Terminal</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CYBERBAZAAR // ENTRY PORTAL</title>
+  <link rel="stylesheet" href="css/hacker-style.css" />
+  <link rel="icon" href="favicon.ico" />
 </head>
-<body>
-  <div class="terminal">
-    <h2>> Initialisation du terminal...</h2>
-    <p>> Connexion établie ✅</p>
-    <p>> Bienvenue, agent <span class="cmd">GAZO_09</span></p>
-    <p>> Tape une commande:</p>
-
-    <ul>
-      <li>> <a class="cmd" href="catalogue.html">catalogue</a> → Voir les cours disponibles</li>
-      <li>> <a class="cmd" href="sell.html">vendre</a> → Publier ton propre cours</li>
-      <li>> <a class="cmd" href="vault.html">vault</a> → Accéder à la zone privée 🔐</li>
-      <li>> <a class="cmd" href="download.html">télécharger</a> → Récupérer le projet complet (.zip)</li>
-    </ul>
-
-    <p>> Statut: Système stable / Crypto nodes connectés / OSINT Ready</p>
-    <p class="terminal-hint">> Tape ou clique une commande pour accéder à la connaissance clandestine.</p>
+<body class="terminal-mode">
+  <div id="boot-sequence">
+    <pre>
+░█▀▄░█▀▀░█░░░█▀▀░█▀▄░░░█▀█░█▀█░█▀▄░█░█░█▀▀░█▀▀
+░█▀▄░█▀▀░█░░░█▀▀░█▀▄░░░█░█░█░█░█▀▄░░█░░█▀▀░▀▀█
+░▀▀░░▀▀▀░▀▀▀░▀▀▀░▀░▀░░░▀░▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀▀▀
+    </pre>
+    <p class="subline">Connexion au réseau CYBERBAZAAR... <span class="blink">█</span></p>
+    <p class="subline">Analyse de l'identité... <span class="blink">█</span></p>
   </div>
+
+  <div id="login-hint" class="hidden">
+    <p>💀 L'accès est réservé. Veuillez vous authentifier.</p>
+    <a href="login.html" class="link">→ Terminal d'identification</a>
+  </div>
+
+  <audio autoplay loop>
+    <source src="assets/ambience/terminal-loop.ogg" type="audio/ogg">
+  </audio>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById('boot-sequence').style.display = 'none';
+      document.getElementById('login-hint').classList.remove('hidden');
+}, 5000); // temps du “boot”
+  </script>
 </body>
 </html>
 ```
